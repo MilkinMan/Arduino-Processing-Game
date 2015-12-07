@@ -30,7 +30,9 @@ int totalPoints = 0;
 //makes a variable for try again function
 boolean tryAgain = true;
  
- 
+ // Binds arduino to Processing
+ -imimport processing.serial.*;
+-import cc.arduino.*;
 void setup() {
   //creates the size of the canvas and loads images
   size(600, 600);
@@ -46,7 +48,8 @@ void draw() {
   fill(230);
   text("Rock! Paper! Scissors!", 30, 50);
  
-  
+ //Sets arduino properties
+  arduino = new Arduino(this, Arduino.list()[2], 57600);
  
   textSize(20);
   fill(255);
