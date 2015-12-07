@@ -1,25 +1,165 @@
-imimport processing.serial.*;
-import cc.arduino.*;
-
-Arduino arduino;
-int ledPin = 13;
-int x=Arduino.HIGH;
-int y=Arduino.LOW;
-void setup()
-{
-  size(800,800);
-  background(75);
-  {noStroke();
-  fill(150);
-  rect(0, 400, 800, 400);}
-  arduino = new Arduino(this, Arduino.list()[2], 57600);
-  arduino.pinMode(ledPin, Arduino.OUTPUT);
+//loads fonts
+PFont gameName;
+PFont instruct;
+ 
+//creates image variables
+PImage rockPic;
+PImage paperPic;
+PImage scissorsPic;
+ 
+//sets int variables for rock, paper and scissors
+int rock = 1;
+int paper = 2;
+int scissors = 3;
+ 
+//sets variables for player's pick, player's picture pick, and computer's pick
+int playNum = 0;
+int playPicNum = 0;
+int compNum = 0;
+int compPlay;
+ 
+//sets variables for win, lose, tie and the final result
+int win = 1;
+int lose = 2;
+int tie = 3;
+int winLoseTie = 0;
+ 
+//sets final points
+int totalPoints = 0;
+ 
+//makes a variable for try again function
+boolean tryAgain = true;
+ 
+ 
+void setup() {
+  //creates the size of the canvas and loads images
+  size(600, 600);
+  
 }
-
-void draw()
-{
- if (mouseY>400){
-  arduino.digitalWrite(ledPin, Arduino.HIGH);}
-  if (mouseY<=400) {
- arduino.digitalWrite(ledPin, Arduino.LOW);}
+ 
+void draw() {
+  //loads the background, images, font and gives instructions
+  background(#02CAD3);
+  
+ 
+  textSize(50);
+  fill(230);
+  text("Rock! Paper! Scissors!", 30, 50);
+ 
+  
+ 
+  textSize(20);
+  fill(255);
+ 
+  
+ 
+ 
+  //checks to see if player wants to try again
+  if (key == 't') {
+    tryAgain = true;
+    winLoseTie = 0;
+  }
+ 
+  //writes out points
+  text("Points:", 250, 590);
+  text(totalPoints, 330, 590);
+ 
+  text("Player Played:", 150, 470);
+  text("Computer Played:", 150, 520);
+ 
+  //checks to see if q was pressed and if so prints out player's choice, computer's choice, and results
+  if (key == 'q') {
+    if (playNum == 1) {
+      text("Rock", 320, 470);
+    }
+    if (playNum == 2) {
+      text("Paper", 320, 470);
+    }
+    if (playNum == 3) {
+      text("Scissors", 320, 470);
+    }
+    if (compNum == 1) {
+      text("Rock", 320, 520);
+    }
+    if (compNum == 2) {
+      text("Paper", 320, 520);
+    }
+    if (compNum == 3) {
+      text("Scissors", 320, 520);
+    }
+    if (winLoseTie == 1) {
+      text("Player Wins", 250, 550);
+    }
+    if (winLoseTie == 2) {
+      text("Computer Wins", 250, 550);
+    }
+    if (winLoseTie == 3) {
+      text("Tie!", 290, 550);
+    }
+  }
+}
+ 
+void keyPressed() {
+  //if the c key is pressed, generates a random "play" for the computer
+  if (key == 'c') {
+    compPlay = int(random(1, 4));
+    if (compPlay == 1) {
+      compNum = 1;
+    }
+    if (compPlay == 2) {
+      compNum = 2;
+    }
+    if (compPlay == 3) {
+      compNum = 3;
+    }
+  }
+  //if r is pressed, sets play as rock for player and resets picture choice
+  if (key == 'r') {
+    if (playPicNum == 1 || playPicNum == 2 || playPicNum == 3) {
+      playPicNum = 0;
+    }
+    playNum = 1;
+  }
+ 
+  //if p is pressed, sets play as paper for player and resets picture choice
+  if (key == 'p') {
+    if (playPicNum == 2 || playPicNum == 1 || playPicNum == 3) {
+      playPicNum = 0;
+    }
+    playNum = 2;
+  }
+  // if s is pressed, sets play as scissors for player and resets picture choice
+  if (key == 's') {
+    if (playPicNum == 3 || playPicNum == 2 || playPicNum == 1) {
+      playPicNum = 0;
+    }
+    playNum = 3;
+  }
+  //if q is pressed, checks to see who won/lost, and gives points accordingly
+  if (key == 'q') {
+    if (playPicNum == 1) {
+      playNum = 1;
+    }
+    if (playPicNum == 2) {
+      playNum = 2;
+    }
+    if (playPicNum == 3) {
+      playNum = 3;
+    }
+    //player win
+    if (playNum == 1 && compNum == 3 || playNum == 2 && compNum == 1 || playNum == 3 && compNum == 2) {
+      winLoseTie = 1;
+      totalPoints = totalPoints + 1;
+    }
+    //player lose
+    if (playNum == 1 && compNum == 2 || playNum == 2 && compNum == 3 || playNum == 3 && compNum == 1) {
+      winLoseTie = 2;
+      totalPoints = totalPoints + 0;
+    }
+    //tie
+    if (playNum == 1 && compNum == 1 || playNum == 2 && compNum == 2 || playNum == 3 && compNum == 3) {
+      winLoseTie = 3;
+      totalPoints = totalPoints + 1;
+    }
+  }
 }
