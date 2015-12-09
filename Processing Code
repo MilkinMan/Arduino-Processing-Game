@@ -1,4 +1,3 @@
-//loads fonts
 PFont gameName;
 PFont instruct;
  
@@ -31,11 +30,27 @@ int totalPoints = 0;
 boolean tryAgain = true;
  
  // Binds arduino to Processing
- -imimport processing.serial.*;
--import cc.arduino.*;
+ import processing.serial.*;
+import cc.arduino.*;
+
+Arduino arduino;
+int ledPin = 13;
+
+int input1= 3;
+int buttonPin1 = 3;     // the number of the pushbutton pin
+int buttonState = 0;
+int buttonPin2 = 4;
+int buttonPin3 = 5;
+int buttonPin4 = 6;
+int buttonPin5 = 7;
+int buttonPin6 = 8;
 void setup() {
   //creates the size of the canvas and loads images
   size(600, 600);
+  
+  arduino = new Arduino(this, Arduino.list()[2], 57600);
+  arduino.pinMode(ledPin, Arduino.OUTPUT);
+arduino.pinMode(input1, Arduino.INPUT);
   
 }
  
@@ -104,48 +119,53 @@ void draw() {
  
 void keyPressed() {
   //if the c key is pressed, generates a random "play" for the computer
-  if (key == 'c') {
-    compPlay = int(random(1, 4));
-    if (compPlay == 1) {
+  
+    buttonState = arduino.digitalRead(buttonPin4);
+ if (buttonState == arduino.HIGH) {
       compNum = 1;
     }
-    if (compPlay == 2) {
+    buttonState = arduino.digitalRead(buttonPin5);
+ if (buttonState == arduino.HIGH) {
       compNum = 2;
     }
-    if (compPlay == 3) {
+    buttonState = arduino.digitalRead(buttonPin6);
+ if (buttonState == arduino.HIGH) {
       compNum = 3;
     }
   }
   //if r is pressed, sets play as rock for player and resets picture choice
-  if (key == 'r') {
+  {buttonState = arduino.digitalRead(buttonPin1);
+ if (buttonState == arduino.HIGH) {
     if (playPicNum == 1 || playPicNum == 2 || playPicNum == 3) {
       playPicNum = 0;
     }
     playNum = 1;
-  }
+  }}
  
   //if p is pressed, sets play as paper for player and resets picture choice
-  if (key == 'p') {
+  {buttonState = arduino.digitalRead(buttonPin2);
+ if (buttonState == arduino.HIGH) {
     if (playPicNum == 2 || playPicNum == 1 || playPicNum == 3) {
       playPicNum = 0;
     }
     playNum = 2;
-  }
+  }}
   // if s is pressed, sets play as scissors for player and resets picture choice
-  if (key == 's') {
+  {buttonState = arduino.digitalRead(buttonPin3);
+ if (buttonState == arduino.HIGH) {
     if (playPicNum == 3 || playPicNum == 2 || playPicNum == 1) {
       playPicNum = 0;
     }
     playNum = 3;
-  }
+  }}
   //if q is pressed, checks to see who won/lost, and gives points accordingly
-  if (key == 'q') {
+  {if (key == 'q') {
     if (playPicNum == 1) {
       playNum = 1;
-    }
-    if (playPicNum == 2) {
+    }}
+    {if (playPicNum == 2) {
       playNum = 2;
-    }
+    }}
     if (playPicNum == 3) {
       playNum = 3;
     }
@@ -165,4 +185,4 @@ void keyPressed() {
       totalPoints = totalPoints + 1;
     }
   }
-}
+
