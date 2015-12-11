@@ -1,3 +1,4 @@
+//loads fonts
 PFont gameName;
 PFont instruct;
  
@@ -118,7 +119,7 @@ void draw() {
 }
  
 void keyPressed() {
-  //if the c key is pressed, generates a random "play" for the computer
+  //The Button map for Player 2
   
     buttonState = arduino.digitalRead(buttonPin4);
  if (buttonState == arduino.HIGH) {
